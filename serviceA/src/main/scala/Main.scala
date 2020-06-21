@@ -2,10 +2,9 @@ import java.util.concurrent.Executors
 
 import cats.effect.{ContextShift, Fiber, IO}
 import model.RobotBuilder
-import io.circe.literal._
 import io.circe.syntax._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 
 
 object Main {
@@ -14,7 +13,7 @@ object Main {
 
   implicit val cs: ContextShift[IO] = IO.contextShift(global)
 
-  val executorService = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(5))
+  val executorService: ExecutionContextExecutorService = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(5))
 
   val contexShift: ContextShift[IO] = IO.contextShift(executorService)
 
