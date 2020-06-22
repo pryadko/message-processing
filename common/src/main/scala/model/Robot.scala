@@ -1,6 +1,7 @@
 package model
 
 import io.circe.{Decoder, Encoder}
+import model.Robot.rng
 
 case class Robot(id: Long,
                  sentient: Boolean,
@@ -8,6 +9,7 @@ case class Robot(id: Long,
                  model: String) {
 }
 object Robot {
+  val rng = new scala.util.Random(0L)
   implicit val decoder: Decoder[Robot] =
     Decoder.forProduct4("id", "sentient", "name", "model")(Robot.apply)
 
@@ -20,7 +22,6 @@ object Robot {
 object RobotBuilder {
   def createRobot(execId: Int): Robot = {
 
-    val rng = new scala.util.Random(0L)
     val id = rng.nextLong()
     val sentient = rng.nextBoolean()
     val name = "Carlos " + execId
