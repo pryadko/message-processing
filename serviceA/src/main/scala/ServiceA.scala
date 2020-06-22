@@ -21,7 +21,7 @@ object ServiceA {
 
   def infiniteIO(execId: Int)(implicit cs: ContextShift[IO]): IO[Fiber[IO, Unit]] = {
     def repeat: IO[Unit] = IO(
-      client.post("http://localhost:8080/", RobotBuilder.createRobot(execId).asJson).start.unsafeRunSync()
+      client.post("http://localhost:8080/events", RobotBuilder.createRobot(execId).asJson).start.unsafeRunSync()
     )
       .map(_ => Thread.sleep(4000))
       .flatMap(_ => IO.shift *> repeat)
