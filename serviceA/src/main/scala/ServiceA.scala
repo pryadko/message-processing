@@ -7,7 +7,7 @@ import io.circe.syntax._
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 
 
-object Main {
+object ServiceA {
 
   import scala.concurrent.ExecutionContext.global
 
@@ -33,9 +33,9 @@ object Main {
     val prog =
       for {
         _ <- infiniteIO(1)(contexShift)
-        _ <- infiniteIO(2)(contexShift)
-        _ <- infiniteIO(3)(contexShift)
-        _ <- infiniteIO(4)(contexShift)
+//        _ <- infiniteIO(2)(contexShift)
+//        _ <- infiniteIO(3)(contexShift)
+//        _ <- infiniteIO(4)(contexShift)
       } yield ()
 
     prog.unsafeRunSync()
