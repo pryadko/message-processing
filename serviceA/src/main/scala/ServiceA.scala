@@ -33,9 +33,9 @@ object ServiceA {
     val prog =
       for {
         _ <- infiniteIO(1)(contexShift)
-//        _ <- infiniteIO(2)(contexShift)
-//        _ <- infiniteIO(3)(contexShift)
-//        _ <- infiniteIO(4)(contexShift)
+        _ <- infiniteIO(2)(contexShift)
+        _ <- infiniteIO(3)(contexShift)
+        _ <- infiniteIO(4)(contexShift)
       } yield ()
 
     prog.unsafeRunSync()
