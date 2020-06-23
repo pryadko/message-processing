@@ -3,10 +3,14 @@ package model
 import io.circe.{Decoder, Encoder}
 import model.Robot.rng
 
-case class Robot(id: Long,
-                 sentient: Boolean,
-                 name: String,
-                 model: String) {
+trait BaseRobot {
+  def id: Long
+  def sentient: Boolean
+  def name: String
+  def model: String
+}
+
+case class Robot(id: Long, sentient: Boolean, name: String, model: String) extends BaseRobot {
 }
 object Robot {
   val rng = new scala.util.Random(0L)

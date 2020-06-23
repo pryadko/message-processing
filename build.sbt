@@ -20,7 +20,10 @@ lazy val common = project
     settings,
     libraryDependencies ++= commonDependencies ++ Seq(
       dependencies.http4sClient,
-      dependencies.http4sServer
+      dependencies.http4sServer,
+      dependencies.http4sDsl,
+      dependencies.kafkaVersion,
+      dependencies.circleParser
     )
   )
   .disablePlugins(AssemblyPlugin)
@@ -30,9 +33,7 @@ lazy val serviceA = project
     name := "serviceA",
     settings,
     assemblySettings,
-    libraryDependencies ++= commonDependencies ++ Seq(
-      dependencies.http4sDsl
-    )
+    libraryDependencies ++= commonDependencies
   )
   .dependsOn(
     common
@@ -44,7 +45,10 @@ lazy val serviceB = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
-      )
+      dependencies.circleParser,
+      dependencies.fs2core,
+      dependencies.fs2io
+    )
   )
   .dependsOn(
     common
@@ -74,6 +78,9 @@ lazy val dependencies =
     val http4sVersion = "0.21.3"
     val catsEffectV = "2.1.3"
     val circleV = "0.13.0"
+    val fs2V = "2.4.2"
+    val fs2KafkaVersionV = "0.20.2"
+//    val KafkaSerializationV = "0.5.22"
 
     val logback = "ch.qos.logback" % "logback-classic" % logbackV
     val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingV
@@ -88,6 +95,13 @@ lazy val dependencies =
     val circleCore = "io.circe" %% "circe-core" % circleV
     val circleGeneric = "io.circe" %% "circe-generic" % circleV
     val circleLiteral = "io.circe" %% "circe-literal" % circleV
+    val circleParser = "io.circe" %% "circe-parser" % circleV
+    val fs2core = "co.fs2" %% "fs2-core" % fs2V
+    val fs2io = "co.fs2" %% "fs2-io" % fs2V
+    val kafkaVersion = "com.ovoenergy" %% "fs2-kafka" % fs2KafkaVersionV
+    val kafkaSerializationCore = "com.ovoenergy" %% "kafka-serialization-core" % KafkaSerializationV
+    val kafkaSerializationCirce = "com.ovoenergy" %% "kafka-serialization-circe" % KafkaSerializationV
+
   }
 
 lazy val commonDependencies = Seq(
