@@ -60,7 +60,13 @@ lazy val serviceC = project
     settings,
     assemblySettings,
     libraryDependencies ++= commonDependencies ++ Seq(
-      )
+      dependencies.sparkCore,
+      dependencies.sparkKafka,
+      dependencies.sparkStreaming,
+      dependencies.sparkSql,
+      dependencies.sparkMlib,
+      dependencies.mongoDb
+    )
   )
   .dependsOn(
     common
@@ -80,7 +86,8 @@ lazy val dependencies =
     val circleV = "0.13.0"
     val fs2V = "2.4.2"
     val fs2KafkaVersionV = "0.20.2"
-//    val KafkaSerializationV = "0.5.22"
+    val sparkV = "1.6.3"
+    val mongoV = "0.11.1"
 
     val logback = "ch.qos.logback" % "logback-classic" % logbackV
     val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingV
@@ -99,8 +106,13 @@ lazy val dependencies =
     val fs2core = "co.fs2" %% "fs2-core" % fs2V
     val fs2io = "co.fs2" %% "fs2-io" % fs2V
     val kafkaVersion = "com.ovoenergy" %% "fs2-kafka" % fs2KafkaVersionV
-    val kafkaSerializationCore = "com.ovoenergy" %% "kafka-serialization-core" % KafkaSerializationV
-    val kafkaSerializationCirce = "com.ovoenergy" %% "kafka-serialization-circe" % KafkaSerializationV
+    val sparkKafka = "org.apache.spark" % "spark-streaming-kafka_2.10" % sparkV
+    val sparkCore = "org.apache.spark" % "spark-core_2.10" % sparkV
+    val sparkStreaming = "org.apache.spark" % "spark-streaming_2.10" % sparkV
+    val sparkSql = "org.apache.spark" % "spark-sql_2.10" % sparkV
+    val sparkMlib = "org.apache.spark" % "spark-mllib_2.10" % sparkV
+
+    val mongoDb = "com.stratio.datasource" % "spark-mongodb_2.10" % mongoV
 
   }
 
@@ -160,9 +172,6 @@ lazy val assemblySettings = Seq(
   assemblyJarName in assembly := name.value + ".jar",
   assemblyMergeStrategy in assembly := {
     case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-    case "application.conf"            => MergeStrategy.concat
-    case x =>
-      val oldStrategy = (assemblyMergeStrategy in assembly).value
-      oldStrategy(x)
+    case x                             => MergeStrategy.first
   }
 )
